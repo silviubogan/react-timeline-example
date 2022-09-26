@@ -1,38 +1,94 @@
-.App {
+h1 {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+div.year-title {
+  width: 100%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+div.year-title.hidden-year {
+  opacity: 0.3;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+div.year-title.start-no-events {
+  opacity: 0.5;
+}
+
+div.year-title.end-no-events {
+  opacity: 0.5;
+}
+
+div.year-title h2 {
+  background: #eee;
+  color: #111;
+  text-align: center;
+  max-width: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 10px;
+}
+
+div.event {
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex-direction: row;
 }
 
-.App-link {
-  color: #61dafb;
+div.event .left,
+div.event .right {
+  width: 50%;
+  padding: 10px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+div.event .left {
+  text-align: right;
+  border-right: 5px dotted #eee;
+}
+
+div.event .event-date {
+  background: #111;
+  color: #eee;
+  width: 50px;
+  margin-left: auto;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+div.event .event-date .year {
+  font-size: 12px;
+}
+
+div.event .event-date .month {
+  font-size: 12px;
+}
+
+div.event .event-date .day {
+  font-size: 30px;
+}
+
+div.event .text {
+  background: #eee;
+  color: #111;
+  max-width: 300px;
+  margin-right: auto;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+div.event .details {
+  margin-top: 10px;
+  background: #eee;
+  color: #111;
+  max-width: 300px;
+  margin-right: auto;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+a.more {
+  margin-top: 10px;
+  display: block;
+  font-size: 12px;
+  color: #888;
 }
