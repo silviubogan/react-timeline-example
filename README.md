@@ -1,3 +1,6 @@
+# React and TypeScript-based timelines prototype
+Based on [GhitaB's work](https://github.com/GhitaB/timeline). Licensed under the same MIT License.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
