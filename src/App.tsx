@@ -1,109 +1,109 @@
 import React from "react";
 import "./App.css";
 
-var example1 = [
-  {
-    type: "point",
-    year: -100, // = 100 BC
-    month: 5, // March
-    day: 27,
-    text: "Lorem ipsum event",
-    color: "#2d3436",
-  },
-  {
-    type: "point",
-    year: -98,
-    month: 5,
-    day: 27,
-    text: "Lorem ipsum event 2",
-    color: "#2d3436",
-  },
-  {
-    type: "point",
-    year: -40,
-    month: 8,
-    day: 3,
-    text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.",
-    color: "#2d3436",
-  },
-  {
-    type: "point",
-    year: 1988,
-    month: 3,
-    day: 27,
-    text: "Bla bla bla",
-    color: "#2d3436",
-  },
-  {
-    type: "point",
-    year: 1988,
-    month: 3,
-    day: 28,
-    text: "Bla bla bla 222",
-    color: "#00b894",
-  },
-];
+// var example1 = [
+//   {
+//     type: "point",
+//     year: -100, // = 100 BC
+//     month: 5, // March
+//     day: 27,
+//     text: "Lorem ipsum event",
+//     color: "#2d3436",
+//   },
+//   {
+//     type: "point",
+//     year: -98,
+//     month: 5,
+//     day: 27,
+//     text: "Lorem ipsum event 2",
+//     color: "#2d3436",
+//   },
+//   {
+//     type: "point",
+//     year: -40,
+//     month: 8,
+//     day: 3,
+//     text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.",
+//     color: "#2d3436",
+//   },
+//   {
+//     type: "point",
+//     year: 1988,
+//     month: 3,
+//     day: 27,
+//     text: "Bla bla bla",
+//     color: "#2d3436",
+//   },
+//   {
+//     type: "point",
+//     year: 1988,
+//     month: 3,
+//     day: 28,
+//     text: "Bla bla bla 222",
+//     color: "#00b894",
+//   },
+// ];
 
-var example2 = [
-  {
-    type: "point",
-    year: -100,
-    month: 5,
-    day: 27,
-    text: "Lorem ipsum event",
-    color: "#2d3436",
-    link: {
-      text: "Find more here",
-      url: "https://google.com",
-    },
-  },
-  {
-    type: "point",
-    year: -98,
-    month: 5,
-    day: 27,
-    text: "Lorem ipsum event 2",
-    color: "#2d3436",
-  },
-  {
-    type: "period",
-    start: {
-      year: -100,
-      month: 1,
-      day: 1,
-      text: "Start period 1",
-      color: "green",
-    },
-    end: {
-      year: 200,
-      month: 5,
-      day: 5,
-      text: "End period 1",
-      color: "red",
-    },
-    text: "Period 1",
-    color: "blue",
-  },
-  {
-    type: "period",
-    start: {
-      year: 500,
-      month: 2,
-      day: 2,
-      text: "Start period 1",
-      color: "green",
-    },
-    end: {
-      year: 1000,
-      month: 3,
-      day: 3,
-      text: "End period 1",
-      color: "red",
-    },
-    text: "Period 1",
-    color: "blue",
-  },
-];
+// var example2 = [
+//   {
+//     type: "point",
+//     year: -100,
+//     month: 5,
+//     day: 27,
+//     text: "Lorem ipsum event",
+//     color: "#2d3436",
+//     link: {
+//       text: "Find more here",
+//       url: "https://google.com",
+//     },
+//   },
+//   {
+//     type: "point",
+//     year: -98,
+//     month: 5,
+//     day: 27,
+//     text: "Lorem ipsum event 2",
+//     color: "#2d3436",
+//   },
+//   {
+//     type: "period",
+//     start: {
+//       year: -100,
+//       month: 1,
+//       day: 1,
+//       text: "Start period 1",
+//       color: "green",
+//     },
+//     end: {
+//       year: 200,
+//       month: 5,
+//       day: 5,
+//       text: "End period 1",
+//       color: "red",
+//     },
+//     text: "Period 1",
+//     color: "blue",
+//   },
+//   {
+//     type: "period",
+//     start: {
+//       year: 500,
+//       month: 2,
+//       day: 2,
+//       text: "Start period 1",
+//       color: "green",
+//     },
+//     end: {
+//       year: 1000,
+//       month: 3,
+//       day: 3,
+//       text: "End period 1",
+//       color: "red",
+//     },
+//     text: "Period 1",
+//     color: "blue",
+//   },
+// ];
 
 type Color = string;
 
@@ -330,7 +330,7 @@ interface Event {
   day?: number;
 }
 
-const expandedTimeline: Event[][][][] = [];
+let expandedTimeline: Event[][][][] = [];
 
 const settings: {
   months: any;
@@ -396,7 +396,7 @@ function getTimelineLimits() {
     }
   }
 
-  console.log(minYear, maxYear);
+  // console.log(minYear, maxYear);
   return [minYear, maxYear];
 }
 
@@ -481,6 +481,8 @@ function addItemToExpandedTimeline(
 }
 
 function drawTimeline() {
+  expandedTimeline = [];
+
   // Init the timeline [min year ... max year]
   var limits = getTimelineLimits();
   var startYear = limits[0];
@@ -586,94 +588,86 @@ function App() {
   }
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Timeline</h1>
-        <div className="container">
-          <div id="timeline">
-            {arr.map((x) => {
-              return (
-                <>
-                  <div className="year-title">
-                    <h2>{humanReadableYear(x.year)}</h2>
-                  </div>
-                  <div className="event">
-                    <div className="left">
-                      <div
-                        className="event-date"
-                        style={{ background: x.eventColor }}
-                      >
-                        <div
-                          className="month"
-                          style={{
-                            display:
-                              x.eventApproxYear ||
-                              (!x.eventApproxYear && x.eventApproxMonth)
-                                ? "none"
-                                : undefined,
-                          }}
-                        >
-                          {x.eventApproxYear ?? "aprox."}
-                          {((!x.eventApproxYear &&
-                            !x.eventApproxMonth &&
-                            x.eventApproxDay) ||
-                            (!x.eventApproxYear &&
-                              !x.eventApproxMonth &&
-                              !x.eventApproxDay)) ??
-                            humanReadableMonth(x.month)}
-                        </div>
-                        <div
-                          className="day"
-                          style={{
-                            display:
-                              (!x.eventApproxYear && x.eventApproxMonth) ||
-                              (!x.eventApproxYear &&
-                                !x.eventApproxMonth &&
-                                x.eventApproxDay)
-                                ? "none"
-                                : undefined,
-                          }}
-                        >
-                          {x.day}
-                        </div>
-                        <div className="year">{humanReadableYear(x.year)}</div>
+      <h1>Timeline</h1>
+      <div className="container">
+        <div id="timeline">
+          {arr.map((x, i) => {
+            return (
+              <React.Fragment key={i}>
+                <div className={`year-title ${yearType(x.year)}`}>
+                  <h2>{humanReadableYear(x.year)}</h2>
+                </div>
+                <div className="event">
+                  <div className="left">
+                    <div
+                      className="event-date"
+                      style={{ background: x.eventColor }}
+                    >
+                      <div className="month">
+                        {x.eventApproxYear && "aprox."}
+                        {!(
+                          x.eventApproxYear ||
+                          (!x.eventApproxYear && x.eventApproxMonth)
+                        ) &&
+                          /*(*/ !x.eventApproxYear &&
+                          !x.eventApproxMonth /*&&
+                          x.eventApproxDay*/ && // ||
+                          // (!x.eventApproxYear &&
+                          //   !x.eventApproxMonth &&
+                          //   !x.eventApproxDay)) &&
+                          humanReadableMonth(x.month)}
                       </div>
-                    </div>
-                    <div className="right">
-                      <div className="text">{x.text}</div>
                       <div
-                        className="details"
+                        className="day"
                         style={{
                           display:
-                            typeof x.detailsText === "undefined"
-                              ? "none"
-                              : undefined,
-                          background: x.detailsColor,
-                        }}
-                      >
-                        {x.detailsText}
-                      </div>
-                      <a
-                        href={x.eventLink?.url}
-                        target="_blank"
-                        className="more"
-                        rel="noreferrer"
-                        style={{
-                          display:
-                            typeof x.eventLink === "undefined"
+                            x.eventApproxYear ||
+                            x.eventApproxMonth ||
+                            x.eventApproxDay
                               ? "none"
                               : undefined,
                         }}
                       >
-                        {x.eventLink?.text}
-                      </a>
+                        {x.day}
+                      </div>
+                      <div className="year">{humanReadableYear(x.year)}</div>
                     </div>
                   </div>
-                </>
-              );
-            })}
-          </div>
+                  <div className="right">
+                    <div className="text">{x.text}</div>
+                    <div
+                      className="details"
+                      style={{
+                        display:
+                          typeof x.detailsText === "undefined"
+                            ? "none"
+                            : undefined,
+                        background: x.detailsColor,
+                      }}
+                    >
+                      {x.detailsText}
+                    </div>
+                    <a
+                      href={x.eventLink?.url}
+                      target="_blank"
+                      className="more"
+                      rel="noreferrer"
+                      style={{
+                        display:
+                          typeof x.eventLink === "undefined"
+                            ? "none"
+                            : undefined,
+                      }}
+                    >
+                      {x.eventLink?.text}
+                    </a>
+                  </div>
+                </div>
+              </React.Fragment>
+            );
+          })}
         </div>
-      </header>
+      </div>
     </div>
   );
 }
