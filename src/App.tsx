@@ -538,15 +538,32 @@ function drawTimeline() {
   settings.noEventsYears = allNoEvents;
 }
 
+interface EventDisplay {
+  text: string;
+  detailsText: any;
+  detailsColor: any;
+  year: number;
+  eventColor: string;
+  eventApproxYear: boolean | undefined;
+  eventApproxMonth: boolean | undefined;
+  eventApproxDay: boolean | undefined;
+  month: Month | undefined;
+  day: number | undefined;
+  eventLink: Link | undefined;
+}
+
 function App() {
   drawTimeline();
 
-  const arr = [];
+  const map: Map<number, EventDisplay[]> = new Map<number, EventDisplay[]>();
   const [startYear, endYear] = getTimelineLimits();
   for (var year = startYear; year <= endYear; year++) {
     if (year === 0) {
       continue;
     }
+
+    const arr = map.get(year) || [];
+    map.set(year, arr);
 
     for (var month = 1; month <= 12; month++) {
       for (var day = 1; day <= 31; day++) {
@@ -561,7 +578,7 @@ function App() {
                 var detailsText = events[i].details.text;
                 var detailsColor = events[i].details.color;
 
-                arr.push({
+                const obj = {
                   text,
                   detailsText,
                   detailsColor,
@@ -573,7 +590,9 @@ function App() {
                   month: events[i].month,
                   day: events[i].day,
                   eventLink: events[i].link,
-                });
+                };
+
+                arr.push(obj);
               }
             }
           }
@@ -581,86 +600,93 @@ function App() {
       }
     }
   }
+
+  let c = 0;
   return (
     <div className="App">
       <h1>Timeline</h1>
       <div className="container">
         <div id="timeline">
-          {arr.map((x, i) => {
-            return (
-              <React.Fragment key={i}>
-                <div className={`year-title ${yearType(x.year)}`}>
-                  <h2>{humanReadableYear(x.year)}</h2>
-                </div>
-                <div className="event">
-                  <div className="left">
-                    <div
-                      className="event-date"
-                      style={{ background: x.eventColor }}
-                    >
-                      <div className="month">
-                        {x.eventApproxYear && "aprox."}
-                        {x.month &&
-                          !(
-                            x.eventApproxYear ||
-                            (!x.eventApproxYear && x.eventApproxMonth)
-                          ) &&
-                          /*(*/ !x.eventApproxYear &&
-                          !x.eventApproxMonth /*&&
-                          x.eventApproxDay*/ && // ||
-                          // (!x.eventApproxYear &&
-                          //   !x.eventApproxMonth &&
-                          //   !x.eventApproxDay)) &&
-                          humanReadableMonth(x.month)}
-                      </div>
+          {[...map.entries()].map(([y, xs]) => {
+            const arr = [
+              <div className={`year-title ${yearType(y)}`} key={c++}>
+                <h2>{humanReadableYear(y)}</h2>
+              </div>,
+            ];
+            arr.push(
+              ...xs.map((x) => {
+                return (
+                  <div className="event" key={c++}>
+                    <div className="left">
                       <div
-                        className="day"
+                        className="event-date"
+                        style={{ background: x.eventColor }}
+                      >
+                        <div className="month">
+                          {x.eventApproxYear && "aprox."}
+                          {x.month &&
+                            !(
+                              x.eventApproxYear ||
+                              (!x.eventApproxYear && x.eventApproxMonth)
+                            ) &&
+                            /*(*/ !x.eventApproxYear &&
+                            !x.eventApproxMonth /*&&
+                            x.eventApproxDay*/ && // ||
+                            // (!x.eventApproxYear &&
+                            //   !x.eventApproxMonth &&
+                            //   !x.eventApproxDay)) &&
+                            humanReadableMonth(x.month)}
+                        </div>
+                        <div
+                          className="day"
+                          style={{
+                            display:
+                              x.eventApproxYear ||
+                              x.eventApproxMonth ||
+                              x.eventApproxDay
+                                ? "none"
+                                : undefined,
+                          }}
+                        >
+                          {x.day}
+                        </div>
+                        <div className="year">{humanReadableYear(x.year)}</div>
+                      </div>
+                    </div>
+                    <div className="right">
+                      <div className="text">{x.text}</div>
+                      <div
+                        className="details"
                         style={{
                           display:
-                            x.eventApproxYear ||
-                            x.eventApproxMonth ||
-                            x.eventApproxDay
+                            typeof x.detailsText === "undefined"
+                              ? "none"
+                              : undefined,
+                          background: x.detailsColor,
+                        }}
+                      >
+                        {x.detailsText}
+                      </div>
+                      <a
+                        href={x.eventLink?.url}
+                        target="_blank"
+                        className="more"
+                        rel="noreferrer"
+                        style={{
+                          display:
+                            typeof x.eventLink === "undefined"
                               ? "none"
                               : undefined,
                         }}
                       >
-                        {x.day}
-                      </div>
-                      <div className="year">{humanReadableYear(x.year)}</div>
+                        {x.eventLink?.text}
+                      </a>
                     </div>
                   </div>
-                  <div className="right">
-                    <div className="text">{x.text}</div>
-                    <div
-                      className="details"
-                      style={{
-                        display:
-                          typeof x.detailsText === "undefined"
-                            ? "none"
-                            : undefined,
-                        background: x.detailsColor,
-                      }}
-                    >
-                      {x.detailsText}
-                    </div>
-                    <a
-                      href={x.eventLink?.url}
-                      target="_blank"
-                      className="more"
-                      rel="noreferrer"
-                      style={{
-                        display:
-                          typeof x.eventLink === "undefined"
-                            ? "none"
-                            : undefined,
-                      }}
-                    >
-                      {x.eventLink?.text}
-                    </a>
-                  </div>
-                </div>
-              </React.Fragment>
+                );
+              })
             );
+            return arr;
           })}
         </div>
       </div>
