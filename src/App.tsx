@@ -110,7 +110,7 @@ type Color = string;
 interface Point {
   type?: "point";
   year: number;
-  month: number;
+  month: Month;
   day: number;
   text: string;
   color: Color;
@@ -317,6 +317,8 @@ interface Link {
   url: string;
 }
 
+type Month = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+
 interface Event {
   text: string;
   color: Color;
@@ -326,7 +328,7 @@ interface Event {
   approxDay?: boolean;
   details: any;
   year?: number;
-  month?: number;
+  month?: Month;
   day?: number;
 }
 
@@ -407,9 +409,7 @@ function humanReadableYear(year: number) {
   return year;
 }
 
-function humanReadableMonth(
-  month: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
-) {
+function humanReadableMonth(month: Month) {
   return settings.months[month];
 }
 
@@ -441,7 +441,7 @@ function addItemToExpandedTimeline(
   details: { text?: string; color?: string }
 ) {
   let eventYear = -Infinity,
-    eventMonth = -1,
+    eventMonth: Month = 1,
     eventDay = -1;
   if (isPoint(item)) {
     eventYear = item.year;
@@ -489,8 +489,8 @@ function drawTimeline() {
   var endYear = limits[1];
 
   // Put the periods on the timeline
-  for (var i = 0; i < timelines.length; i++) {
-    var item = timelines[i];
+  for (let i = 0; i < timelines.length; i++) {
+    let item = timelines[i];
     if (item.type === "period") {
       var details = { text: item.text, color: item.color };
       addItemToExpandedTimeline(item.start, details);
@@ -499,8 +499,8 @@ function drawTimeline() {
   }
 
   // Put the points on the timeline
-  for (var i = 0; i < timelines.length; i++) {
-    var item = timelines[i];
+  for (let i = 0; i < timelines.length; i++) {
+    let item = timelines[i];
     if (item.type === "point") {
       addItemToExpandedTimeline(item, {});
     }
@@ -509,7 +509,6 @@ function drawTimeline() {
   // Check for no events years
   var allNoEvents = [];
   var noEvents = [];
-  var lastNoEvents = -100000;
   for (var year = startYear; year <= endYear; year++) {
     // make sure all years are initialized
     if (!expandedTimeline.hasOwnProperty(year)) {
@@ -527,16 +526,13 @@ function drawTimeline() {
       } else {
         noEvents[1] = year;
       }
-
-      lastNoEvents = year;
     } else {
       // save this period of no events years
-      if (noEvents.length == 2) {
+      if (noEvents.length === 2) {
         allNoEvents.push(noEvents);
       }
       // reset
       noEvents = [];
-      lastNoEvents = -100000;
     }
   }
   settings.noEventsYears = allNoEvents;
@@ -565,7 +561,7 @@ function App() {
                 var detailsText = events[i].details.text;
                 var detailsColor = events[i].details.color;
 
-                const evt: any = {
+                arr.push({
                   text,
                   detailsText,
                   detailsColor,
@@ -577,8 +573,7 @@ function App() {
                   month: events[i].month,
                   day: events[i].day,
                   eventLink: events[i].link,
-                };
-                arr.push(evt);
+                });
               }
             }
           }
@@ -605,10 +600,11 @@ function App() {
                     >
                       <div className="month">
                         {x.eventApproxYear && "aprox."}
-                        {!(
-                          x.eventApproxYear ||
-                          (!x.eventApproxYear && x.eventApproxMonth)
-                        ) &&
+                        {x.month &&
+                          !(
+                            x.eventApproxYear ||
+                            (!x.eventApproxYear && x.eventApproxMonth)
+                          ) &&
                           /*(*/ !x.eventApproxYear &&
                           !x.eventApproxMonth /*&&
                           x.eventApproxDay*/ && // ||
